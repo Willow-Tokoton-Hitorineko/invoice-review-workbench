@@ -1,0 +1,5 @@
+{"data_kind":"synthetic","invoices":[
+ {"invoice_id":"DEMO-001","amount":"128.50","currency":"CNY","issue_date":"2026-01-03","human_approval":{}},
+ {"invoice_id":"DEMO-002","amount":"35.00","currency":"CNY","issue_date":"2026-01-04","human_approval":{"category":"Office supplies","project":"Example project","expense_date":"2026-01-02"}},
+ {"invoice_id":"DEMO-003","amount":"-12.00","currency":"CNY","human_approval":{}}
+]}
