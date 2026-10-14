@@ -17,6 +17,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path=='/sample':
             return self.send(200,(PUBLIC.parent/'samples/synthetic.json').read_bytes())
+        if self.path in ('/app.js','/app.css'):
+            kind='text/javascript; charset=utf-8' if self.path.endswith('.js') else 'text/css; charset=utf-8'
+            return self.send(200,(PUBLIC/self.path[1:]).read_bytes(),kind)
         if self.path=='/': return self.send(200,(PUBLIC/'index.html').read_bytes(),'text/html; charset=utf-8')
         self.send(404,b'{}')
     def do_POST(self):
