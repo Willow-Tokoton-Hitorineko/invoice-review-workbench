@@ -1,0 +1,59 @@
+# 票据复核工作台｜合成数据演示
+
+按公开需求独立实现的本地票据复核工作台，将确定性事实校验和人工决策分开。
+
+> 公开方法演示 / Public methodology demo。合成数据不代表原项目成果，具体实现由 AI 编程工具辅助完成。
+
+## 功能
+
+- 金额、币种和批内重复编号由规则校验。
+- 科目、项目和实际发生日期必须由人确认，不用开票日期代填。
+- 异常阻断导出；CSV 防公式注入；CLI 拒绝覆盖已有文件。
+- 本机网页允许编辑 JSON、复核状态、下载 CSV，不在服务端持久化。
+
+## 本地运行
+
+Python 3.11+。
+
+```sh
+python -m pip install -r requirements.txt
+python workbench.py
+python -m unittest discover -s tests -v
+```
+
+入口：`workbench.py / serve.py`。不需要 API Key、数据库、网络服务或付费模型。
+
+网页复核：
+
+```sh
+python serve.py
+```
+
+打开 `http://127.0.0.1:8791`；停止进程即停止服务。编辑 `human_approval` 后再次校验，只有全部 APPROVED 才能下载。不要用此公开演示处理真实业务资料。
+
+## 流程
+
+```mermaid
+flowchart LR
+A[JSON 合成票据] --> B[金额与重复校验]
+  B --> C[人工确认科目/项目/发生日期]
+  C --> D{全部通过?}
+  D -->|是| E[CSV 导出]
+  D -->|否| F[阻断并显示原因]
+```
+
+## 验证
+
+本地验证记录见 [VERIFICATION.md](VERIFICATION.md)。GitHub Actions 在 push 与 PR 时运行相同的离线测试；本地通过不代表远端 CI 已通过。
+
+## 数据与局限
+
+不做 OCR、不调用 LLM、不读取 Excel 模板；仅支持 JSON 输入与 CSV 导出。批内查重不等于跨批次查重，人工确认字段不代表凭证真实性已核实。不是公司原系统，未复用原公司代码或规则；不继承内部 88/90 等评测结果。
+
+只有三条合成票据。不包含真实票据、税号、员工信息、公司科目、长期记忆或会话记录。
+
+## 许可与贡献
+
+独立公开实现代码：MIT。合成样例随仓库发布，不向使用者授予任何第三方商业数据权利。没有捆绑原公司或团队源码。依赖与公开接口归因见 [NOTICE](NOTICE)。
+
+[作品集](https://github.com/Willow-Tokoton-Hitorineko/research-portfolio) · [个人主页](https://github.com/Willow-Tokoton-Hitorineko)
